@@ -1,10 +1,13 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const serverless = require('serverless-http');
-const ListingsDB = require('./modules/listingsDB.js');
-
 const app = express();
+const dotenv= require('dotenv').config();
+
+const cors = require('cors');
+//const serverless = require('serverless-http');
+const ListingsDB = require('./modules/listingsDB.js');
+const HTTP_PORT = process.env.PORT || 3000;
+
+
 const db = new ListingsDB();
 
 app.use(cors());
@@ -24,9 +27,10 @@ app.post('/api/listings', async (req, res) => {
 });
 
 app.get('/api/listings', async (req, res) => {
-  const { page, perPage, name } = req.query;
+  const { page=1, perPage=5, name } = req.query;
   try {
     const listings = await db.getAllListings(page, perPage, name);
+    console.log(listings);
     res.json(listings);
   } catch (err) {
     const isBadParams = err.message.includes('page and perPage');
@@ -64,10 +68,25 @@ app.delete('/api/listings/:id', async (req, res) => {
   }
 });
 
-const ready = db.initialize(process.env.MONGODB_CONN_STRING);
-const handler = serverless(app);
+console.log(process.env.MONGODB_CONN_STRING);
+db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
+  app.listen(HTTP_PORT, ()=>{
+  console.log(`server listening on: ${HTTP_PORT}`);
+  });
+  }).catch((err)=>{
+  console.log(err);
+  });
 
-module.exports = async (req, res) => {
-  await ready;
-  return handler(req, res);
-};
+// const ready = db.initialize(process.env.MONGODB_CONN_STRING);
+// const handler = serverless(app);
+// 
+// module.exports = async (req, res) => {
+  // await ready;
+  // return handler(req, res);
+// };
+// 
+
+
+
+
+

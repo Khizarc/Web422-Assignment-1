@@ -9,6 +9,7 @@ module.exports = class ListingsDB {
 
   // Pass the connection string to `initialize()`
   initialize(connectionString) {
+    console.log("Initialize")
     return new Promise((resolve, reject) => {
       const db = mongoose.createConnection(connectionString);
 
@@ -16,6 +17,7 @@ module.exports = class ListingsDB {
         reject(err);
       });
       db.once('open', () => {
+        console.log("Connection opennnn")
         this.Listing = db.model("listing", listingSchema);
         resolve();
       });
