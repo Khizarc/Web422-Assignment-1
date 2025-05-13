@@ -1,3 +1,17 @@
+/********************************************************************************
+* WEB422 – Assignment 1
+*
+* I declare that this assignment is my own work in accordance with Seneca's
+* Academic Integrity Policy:
+*
+* https://www.senecapolytechnic.ca/about/policies/academic-integrity-policy.html
+*
+* Name: khizar chaudhry Student ID: 029957156  Date: 2025-05-13
+*
+* Published URL: https://web422-assignment-1-w82i-testing.vercel.app/
+*
+********************************************************************************/
+
 const express = require('express');
 const app = express();
 const dotenv= require('dotenv').config();
